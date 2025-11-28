@@ -1,7 +1,17 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles/features.css";
 
 function Features() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Always redirect to AI page with query on enter
+    navigate("/get-started", { state: { initialQuery: searchQuery } });
+  };
+
   const featuresList = [
     {
       id: 1,
@@ -67,7 +77,22 @@ function Features() {
         <div className="features-header">
           <h2>Tairis</h2>
           <p>Everything you need for medical emergencies</p>
-          <Link to="/get-started" className="header-btn">Get Started</Link>
+          
+          <form onSubmit={handleSearch} className="hero-search-form">
+            <input 
+              type="text" 
+              placeholder="Search for doctors, services, or health tips..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="hero-search-input"
+            />
+            <button type="submit" className="hero-search-btn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+          </form>
         </div>
 
         <div className="features-title-section">
