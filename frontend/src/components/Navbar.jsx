@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles/navbar.css";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+    window.location.reload(); // Force refresh to update navbar state
   };
 
   return (
@@ -49,9 +59,15 @@ function Navbar() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/auth" className="nav-link auth-btn">
-              Login / Sign Up
-            </Link>
+            {token ? (
+              <button onClick={handleLogout} className="nav-link auth-btn" style={{ border: "none", cursor: "pointer" }}>
+                Logout ({user.user_metadata?.full_name?.split(' ')[0] || "User"})
+              </button>
+            ) : (
+              <Link to="/auth" className="nav-link auth-btn">
+                Login / Sign Up
+              </Link>
+            )}
           </li>
         </ul>
       </div>

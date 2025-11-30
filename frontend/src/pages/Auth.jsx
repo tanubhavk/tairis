@@ -52,7 +52,7 @@ function Auth() {
         const data = await response.json();
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        navigate("/get-started");
+        window.location.href = "/get-started";
       } else {
         const data = await response.json();
         setLoginError(data.msg || "Invalid email or password");
